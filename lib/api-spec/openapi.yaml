@@ -1,0 +1,596 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: NetCore Academy learning, quiz, and progress API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+  - name: academy
+  - name: quizzes
+  - name: progress
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /academy/catalog:
+    get:
+      operationId: getAcademyCatalog
+      tags: [academy]
+      summary: Get subjects and topics
+      responses:
+        "200":
+          description: Available subjects and topics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogResponse"
+  /quiz-sessions:
+    post:
+      operationId: createQuizSession
+      tags: [quizzes]
+      summary: Start a quiz using eligible questions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizStartInput"
+      responses:
+        "201":
+          description: Quiz started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizSession"
+        "400":
+          description: Invalid quiz configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /quiz-sessions/{sessionId}:
+    get:
+      operationId: getQuizSession
+      tags: [quizzes]
+      summary: Restore a saved quiz session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Quiz state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizSession"
+        "404":
+          description: Session not found
+  /quiz-sessions/{sessionId}/answers:
+    put:
+      operationId: saveQuizAnswer
+      tags: [quizzes]
+      summary: Save or update an answer and flag state
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizAnswerInput"
+      responses:
+        "200":
+          description: Answer saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedAnswer"
+  /quiz-sessions/{sessionId}/submit:
+    post:
+      operationId: submitQuizSession
+      tags: [quizzes]
+      summary: Complete a quiz and return explanations and results
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GuestInput"
+      responses:
+        "200":
+          description: Quiz result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizResult"
+  /dashboard/{guestId}:
+    get:
+      operationId: getDashboard
+      tags: [progress]
+      summary: Get actual progress and recent activity for a guest
+      parameters:
+        - name: guestId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Progress dashboard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardResponse"
+  /review-queue/{guestId}:
+    get:
+      operationId: getReviewQueue
+      tags: [progress]
+      summary: Get missed and difficult questions due for review
+      parameters:
+        - name: guestId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Personalized review queue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewQueueResponse"
+  /bookmarks/{guestId}:
+    get:
+      operationId: getBookmarks
+      tags: [progress]
+      summary: List saved questions
+      parameters:
+        - name: guestId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Saved questions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionList"
+  /bookmarks/{guestId}/{questionId}:
+    put:
+      operationId: addBookmark
+      tags: [progress]
+      summary: Bookmark a question
+      parameters:
+        - name: guestId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: questionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Bookmark saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookmarkResponse"
+    delete:
+      operationId: removeBookmark
+      tags: [progress]
+      summary: Remove a bookmark
+      parameters:
+        - name: guestId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: questionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Bookmark removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookmarkResponse"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+    Subject:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        questionCount:
+          type: integer
+      required: [id, name, description, questionCount]
+    Topic:
+      type: object
+      properties:
+        id:
+          type: string
+        subjectId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        questionCount:
+          type: integer
+      required: [id, subjectId, name, description, questionCount]
+    CatalogResponse:
+      type: object
+      properties:
+        subjects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Subject"
+        topics:
+          type: array
+          items:
+            $ref: "#/components/schemas/Topic"
+      required: [subjects, topics]
+    QuestionChoice:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+      required: [id, text]
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+        subjectId:
+          type: string
+        topicId:
+          type: string
+        topicName:
+          type: string
+        type:
+          type: string
+          enum: [multiple_choice, multiple_select, true_false, fill_blank, scenario]
+        prompt:
+          type: string
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        objective:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionChoice"
+        sourceTitle:
+          type: ["string", "null"]
+        sourceUrl:
+          type: ["string", "null"]
+        verified:
+          type: boolean
+      required: [id, subjectId, topicId, topicName, type, prompt, difficulty, objective, choices, sourceTitle, sourceUrl, verified]
+    ReviewedQuestion:
+      allOf:
+        - $ref: "#/components/schemas/Question"
+        - type: object
+          properties:
+            correctChoiceIds:
+              type: array
+              items:
+                type: string
+            correctText:
+              type: ["string", "null"]
+            explanation:
+              type: string
+          required: [correctChoiceIds, correctText, explanation]
+    SavedAnswer:
+      type: object
+      properties:
+        questionId:
+          type: string
+        selectedChoiceIds:
+          type: array
+          items:
+            type: string
+        textAnswer:
+          type: ["string", "null"]
+        flagged:
+          type: boolean
+        isCorrect:
+          type: ["boolean", "null"]
+        feedback:
+          oneOf:
+            - $ref: "#/components/schemas/AnswerFeedback"
+            - type: "null"
+      required: [questionId, selectedChoiceIds, textAnswer, flagged, isCorrect, feedback]
+    AnswerFeedback:
+      type: object
+      properties:
+        correctChoiceIds:
+          type: array
+          items:
+            type: string
+        correctText:
+          type: ["string", "null"]
+        explanation:
+          type: string
+        isCorrect:
+          type: boolean
+      required: [correctChoiceIds, correctText, explanation, isCorrect]
+    GuestInput:
+      type: object
+      properties:
+        guestId:
+          type: string
+          minLength: 8
+          maxLength: 100
+      required: [guestId]
+    QuizStartInput:
+      type: object
+      properties:
+        guestId:
+          type: string
+          minLength: 8
+          maxLength: 100
+        mode:
+          type: string
+          enum: [quick, topic, mock, timed, custom, review]
+        subjectId:
+          type: string
+          enum: [network-fundamentals, operating-systems]
+        topicIds:
+          type: array
+          items:
+            type: string
+        difficulty:
+          type: string
+          enum: [mixed, easy, medium, hard]
+        questionCount:
+          type: integer
+          minimum: 1
+          maximum: 50
+        timeLimitSeconds:
+          type: ["integer", "null"]
+          minimum: 1
+        immediateFeedback:
+          type: boolean
+      required: [guestId, mode, subjectId, topicIds, difficulty, questionCount, timeLimitSeconds, immediateFeedback]
+    QuizAnswerInput:
+      type: object
+      properties:
+        guestId:
+          type: string
+        questionId:
+          type: string
+        selectedChoiceIds:
+          type: array
+          items:
+            type: string
+        textAnswer:
+          type: ["string", "null"]
+        flagged:
+          type: boolean
+      required: [guestId, questionId, selectedChoiceIds, textAnswer, flagged]
+    QuizSession:
+      type: object
+      properties:
+        id:
+          type: string
+        guestId:
+          type: string
+        mode:
+          type: string
+        subjectId:
+          type: string
+        status:
+          type: string
+          enum: [in_progress, completed]
+        questionCount:
+          type: integer
+        timeLimitSeconds:
+          type: ["integer", "null"]
+        immediateFeedback:
+          type: boolean
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: ["string", "null"]
+          format: date-time
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/SavedAnswer"
+      required: [id, guestId, mode, subjectId, status, questionCount, timeLimitSeconds, immediateFeedback, startedAt, completedAt, questions, answers]
+    QuizResult:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        subjectId:
+          type: string
+        mode:
+          type: string
+        score:
+          type: integer
+        total:
+          type: integer
+        accuracy:
+          type: number
+        completedAt:
+          type: string
+          format: date-time
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuizResultAnswer"
+      required: [sessionId, subjectId, mode, score, total, accuracy, completedAt, answers]
+    QuizResultAnswer:
+      type: object
+      properties:
+        question:
+          $ref: "#/components/schemas/ReviewedQuestion"
+        selectedChoiceIds:
+          type: array
+          items:
+            type: string
+        textAnswer:
+          type: ["string", "null"]
+        flagged:
+          type: boolean
+        isCorrect:
+          type: boolean
+      required: [question, selectedChoiceIds, textAnswer, flagged, isCorrect]
+    DashboardTopic:
+      type: object
+      properties:
+        topicId:
+          type: string
+        topicName:
+          type: string
+        subjectId:
+          type: string
+        attempted:
+          type: integer
+        correct:
+          type: integer
+        accuracy:
+          type: number
+      required: [topicId, topicName, subjectId, attempted, correct, accuracy]
+    RecentAttempt:
+      type: object
+      properties:
+        id:
+          type: string
+        subjectId:
+          type: string
+        mode:
+          type: string
+        score:
+          type: integer
+        total:
+          type: integer
+        accuracy:
+          type: number
+        completedAt:
+          type: string
+          format: date-time
+      required: [id, subjectId, mode, score, total, accuracy, completedAt]
+    DifficultyMastery:
+      type: object
+      properties:
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        attempted:
+          type: integer
+        correct:
+          type: integer
+        accuracy:
+          type: number
+      required: [difficulty, attempted, correct, accuracy]
+    DashboardResponse:
+      type: object
+      properties:
+        completedQuizzes:
+          type: integer
+        questionsAnswered:
+          type: integer
+        overallAccuracy:
+          type: number
+        bookmarkedCount:
+          type: integer
+        dueReviewCount:
+          type: integer
+        topicMastery:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardTopic"
+        difficultyMastery:
+          type: array
+          items:
+            $ref: "#/components/schemas/DifficultyMastery"
+        weakAreas:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardTopic"
+        recentAttempts:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecentAttempt"
+      required: [completedQuizzes, questionsAnswered, overallAccuracy, bookmarkedCount, dueReviewCount, topicMastery, difficultyMastery, weakAreas, recentAttempts]
+    QuestionList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Question"
+    ReviewQueueResponse:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReviewedQuestion"
+      required: [questions]
+    BookmarkResponse:
+      type: object
+      properties:
+        questionId:
+          type: string
+        bookmarked:
+          type: boolean
+      required: [questionId, bookmarked]

@@ -1,0 +1,254 @@
+[
+  {
+    "id": "net-network-basics",
+    "subjectId": "network-fundamentals",
+    "name": "Network Fundamentals",
+    "order": 1
+  },
+  {
+    "id": "net-osi",
+    "subjectId": "network-fundamentals",
+    "name": "Models & Layers",
+    "order": 2
+  },
+  {
+    "id": "net-devices",
+    "subjectId": "network-fundamentals",
+    "name": "Network Devices & Roles",
+    "order": 3
+  },
+  {
+    "id": "net-ethernet",
+    "subjectId": "network-fundamentals",
+    "name": "Ethernet, MAC & ARP",
+    "order": 4
+  },
+  {
+    "id": "net-media",
+    "subjectId": "network-fundamentals",
+    "name": "Network Media & Physical Layer",
+    "order": 5
+  },
+  {
+    "id": "net-ip",
+    "subjectId": "network-fundamentals",
+    "name": "IPv4 Addressing",
+    "order": 6
+  },
+  {
+    "id": "net-subnetting",
+    "subjectId": "network-fundamentals",
+    "name": "Subnetting & Address Planning",
+    "order": 7
+  },
+  {
+    "id": "net-ipv6",
+    "subjectId": "network-fundamentals",
+    "name": "IPv6 Addressing",
+    "order": 8
+  },
+  {
+    "id": "net-routing",
+    "subjectId": "network-fundamentals",
+    "name": "Switching & Routing",
+    "order": 9
+  },
+  {
+    "id": "net-vlans",
+    "subjectId": "network-fundamentals",
+    "name": "VLANs & Trunking",
+    "order": 10
+  },
+  {
+    "id": "net-ospf",
+    "subjectId": "network-fundamentals",
+    "name": "Dynamic Routing & OSPF Basics",
+    "order": 11
+  },
+  {
+    "id": "net-transport",
+    "subjectId": "network-fundamentals",
+    "name": "Transport & Ports",
+    "order": 12
+  },
+  {
+    "id": "net-services",
+    "subjectId": "network-fundamentals",
+    "name": "Network Services: DHCP & DNS",
+    "order": 13
+  },
+  {
+    "id": "net-nat",
+    "subjectId": "network-fundamentals",
+    "name": "NAT, PAT & Private Networks",
+    "order": 14
+  },
+  {
+    "id": "net-wireless",
+    "subjectId": "network-fundamentals",
+    "name": "Wireless Networking",
+    "order": 15
+  },
+  {
+    "id": "net-troubleshooting",
+    "subjectId": "network-fundamentals",
+    "name": "Troubleshooting & Network Security Basics",
+    "order": 16
+  },
+  {
+    "id": "net-security-acl",
+    "subjectId": "network-fundamentals",
+    "name": "ACLs & Network Access Control",
+    "order": 17
+  },
+  {
+    "id": "net-tools",
+    "subjectId": "network-fundamentals",
+    "name": "Network Diagnostic Tools",
+    "order": 18
+  },
+  {
+    "id": "net-wireshark",
+    "subjectId": "network-fundamentals",
+    "name": "Packet Analysis with Wireshark",
+    "order": 19
+  },
+  {
+    "id": "net-nmap",
+    "subjectId": "network-fundamentals",
+    "name": "Nmap & Service Discovery",
+    "order": 20
+  },
+  {
+    "id": "net-monitoring",
+    "subjectId": "network-fundamentals",
+    "name": "Network Monitoring & Performance",
+    "order": 21
+  },
+  {
+    "id": "net-labs",
+    "subjectId": "network-fundamentals",
+    "name": "Integrated Network Labs",
+    "order": 22
+  },
+  {
+    "id": "os-fundamentals",
+    "subjectId": "operating-systems",
+    "name": "Operating System Fundamentals",
+    "order": 1
+  },
+  {
+    "id": "os-processes",
+    "subjectId": "operating-systems",
+    "name": "Processes & Threads",
+    "order": 2
+  },
+  {
+    "id": "os-scheduling",
+    "subjectId": "operating-systems",
+    "name": "CPU Scheduling",
+    "order": 3
+  },
+  {
+    "id": "os-concurrency",
+    "subjectId": "operating-systems",
+    "name": "Concurrency, Synchronization & Deadlocks",
+    "order": 4
+  },
+  {
+    "id": "os-memory",
+    "subjectId": "operating-systems",
+    "name": "Memory Management & Virtual Memory",
+    "order": 5
+  },
+  {
+    "id": "os-files",
+    "subjectId": "operating-systems",
+    "name": "File Systems & Permissions",
+    "order": 6
+  },
+  {
+    "id": "os-io",
+    "subjectId": "operating-systems",
+    "name": "I/O, Interrupts & Device Drivers",
+    "order": 7
+  },
+  {
+    "id": "os-boot-linux",
+    "subjectId": "operating-systems",
+    "name": "Boot Process & Linux Overview",
+    "order": 8
+  },
+  {
+    "id": "os-shell",
+    "subjectId": "operating-systems",
+    "name": "Linux Shell & Command-Line Basics",
+    "order": 9
+  },
+  {
+    "id": "os-linux-filesystem",
+    "subjectId": "operating-systems",
+    "name": "Linux Filesystem Navigation",
+    "order": 10
+  },
+  {
+    "id": "os-linux-permissions",
+    "subjectId": "operating-systems",
+    "name": "Linux Users, Groups & Permissions",
+    "order": 11
+  },
+  {
+    "id": "os-cli-text",
+    "subjectId": "operating-systems",
+    "name": "Text Processing & CLI Workflows",
+    "order": 12
+  },
+  {
+    "id": "os-process-tools",
+    "subjectId": "operating-systems",
+    "name": "Linux Process & Resource Tools",
+    "order": 13
+  },
+  {
+    "id": "os-services",
+    "subjectId": "operating-systems",
+    "name": "Linux Services & systemd",
+    "order": 14
+  },
+  {
+    "id": "os-linux-networking",
+    "subjectId": "operating-systems",
+    "name": "Linux Networking Fundamentals",
+    "order": 15
+  },
+  {
+    "id": "os-storage",
+    "subjectId": "operating-systems",
+    "name": "Linux Storage & Filesystems Operations",
+    "order": 16
+  },
+  {
+    "id": "os-logs",
+    "subjectId": "operating-systems",
+    "name": "Linux Logs & System Troubleshooting",
+    "order": 17
+  },
+  {
+    "id": "os-scripting",
+    "subjectId": "operating-systems",
+    "name": "Bash Scripting & Automation",
+    "order": 18
+  },
+  {
+    "id": "os-virtualization",
+    "subjectId": "operating-systems",
+    "name": "Virtualization & Containers",
+    "order": 19
+  },
+  {
+    "id": "os-linux-security",
+    "subjectId": "operating-systems",
+    "name": "Linux Security & System Hardening",
+    "order": 20
+  }
+]

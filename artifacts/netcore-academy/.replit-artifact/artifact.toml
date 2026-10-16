@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "NetCore Academy"
+description = "A responsive learning platform for Network Fundamentals and Operating Systems, with original practice questions, persistent quiz progress, revision tools, and safe browser-based labs."
+version = "1.0.0"
+id = "artifacts/netcore-academy"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20981
+
+[services.development]
+run = "pnpm --filter @workspace/netcore-academy run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/netcore-academy", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/netcore-academy/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20981"
+BASE_PATH = "/"
